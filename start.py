@@ -12,15 +12,31 @@ if __name__ == "__main__":
 		except:
 			print "ERROR. Can't read file:", sys.argv[1]
 			sys.exit(1)
-		text = in_file.read()
-		print type(text)
-		print text
+
+		# text = in_file.read()
+		al_txt = ''
+		no_com_txt = ''
+		for line in in_file.readlines():
+			al_txt += line
+			# print '|',line,'|'
+			pos = line.find('#')
+			if pos == -1:
+				no_com_txt += line
+			elif pos > 0:
+				no_com_txt += line[:pos] + '\n'
+				# print '------->', line[:pos] + '\n','<------'
+		# print '\n\n'
+		# print al_txt
+		# print '________'
+		# print no_com_txt
+
+		# print type(text)
+		# print text
 		in_file.close()
 	elif len(sys.argv) == 4:
 		sz = 0
 		solv = False
 		iterr = -1
-
 		# print(sys.argv[1]).isdigit()
 		if sys.argv[1].isdigit():
 			sz = int(sys.argv[1])
@@ -42,10 +58,11 @@ if __name__ == "__main__":
 		if iterr <= 0:
 			print './start.py [size] [-s, solve OR -u, unsolve] [-i, iterations]\niterations must be digit > 0'
 			sys.exit(1)
-
 		puzzle = make_puzzle(sz, solvable=solv, iterations=iterr)
 		print(type(puzzle))
 		print_pz(sz, solv, puzzle)#check solve
+		print puzzle
 	else:
 		print './start.py [name_file]\n./start.py [size] [-s, solve OR -u, unsolve] [-i, iterations]'
 		sys.exit(1)
+	# print sz
