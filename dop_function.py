@@ -2,10 +2,50 @@
 
 import sys
 import numpy as np
+from pz import make_puzzle,print_pz
 
 def ERR(ne):
 	print ne
 	sys.exit(1)
+
+
+def variant(lst_pz, size, side):
+	if side == 'l':
+		x_zero, y_zero = np.nonzero(0 == lst_pz)
+		x_zero = x_zero[0]
+		y_zero = y_zero[0]
+		if y_zero > 0:
+			lst_pz[x_zero][y_zero] = lst_pz[x_zero][y_zero - 1]
+			lst_pz[x_zero][y_zero - 1] = 0
+			return True, lst_pz
+
+	elif side == 'r':
+		x_zero, y_zero = np.nonzero(0 == lst_pz)
+		x_zero = x_zero[0]
+		y_zero = y_zero[0]
+		if y_zero < size - 1:
+			lst_pz[x_zero][y_zero] = lst_pz[x_zero][y_zero + 1]
+			lst_pz[x_zero][y_zero + 1] = 0
+			return True, lst_pz
+
+	elif side == 'u':
+		x_zero, y_zero = np.nonzero(0 == lst_pz)
+		x_zero = x_zero[0]
+		y_zero = y_zero[0]
+		if x_zero > 0:
+			lst_pz[x_zero][y_zero] = lst_pz[x_zero - 1][y_zero]
+			lst_pz[x_zero - 1][y_zero] = 0
+			return True, lst_pz
+
+	elif side == 'd':
+		x_zero, y_zero = np.nonzero(0 == lst_pz)
+		x_zero = x_zero[0]
+		y_zero = y_zero[0]
+		if x_zero < size - 1:
+			lst_pz[x_zero][y_zero] = lst_pz[x_zero + 1][y_zero]
+			lst_pz[x_zero + 1][y_zero] = 0
+			return True, lst_pz
+	return False, -1
 
 def heuristic_MH(lst_pz,lst_must, sz):
 	# print 'heuristic_MH'
@@ -114,22 +154,22 @@ def parsing_arg():
 			sys.exit(1)
 		lst_pz = make_puzzle(frst_digit, solvable=solv, iterations=iterr)#-s and his solved correct
 		print_pz(frst_digit, solv, lst_pz)#check solve
-		
 	else:
 		print './start.py [name_file]\n./start.py [size] [-s, solve OR -u, unsolve] [iterations]'
 		sys.exit(1)
 	return lst_pz, frst_digit
 
 
-def closed_append(closed, num_closed, lst_pz, parents, g, h):
+def closed_append(closed, lst_pz, parents, g, h):
 	closed.append([])
 	f = g + h
+	num_closed = len(closed) - 1
 	closed[num_closed].append(f)#0
 	closed[num_closed].append(g)#1
 	closed[num_closed].append(h)#2
 	closed[num_closed].append(parents)#3
 	closed[num_closed].append(lst_pz)#4
-	num_closed += 1
+
 
 def have_this_in_closed(closed, lst):
 
@@ -138,7 +178,9 @@ def have_this_in_closed(closed, lst):
 			return True
 	return False
 
+
 def return_correct_lst(size):
+	
 	lst_must = []
 	i = 0
 	while i < size:
@@ -149,7 +191,8 @@ def return_correct_lst(size):
 			i2 += 1
 		i += 1
 	lst_must = np.reshape(lst_must, (size, size))
-	
+
+	k = 0
 	up = 0
 	left = 0
 	right = size
@@ -157,31 +200,36 @@ def return_correct_lst(size):
 	maxx = (size ** 2)
 	i = 1
 	while i < maxx:
-		u2 = up
-		l2 = left
-		while u2 < down - 1:
-			while l2 < right - 1:
-				if i < maxx:
-					lst_must[u2][l2] = i
-				i += 1
-				l2 += 1
-			if i < maxx:
-				lst_must[u2][l2] = i
+		y2 = up
+		x2 = left
+		while x2 < right and i < maxx:
+			lst_must[y2][x2] = i
+			x2 += 1
 			i += 1
-			u2 += 1
-
-		while u2 > up:
-			while l2 > left:
-				if i < maxx:
-					lst_must[u2][l2] = i
-				i += 1
-				l2 -= 1
-			if i < maxx:
-				lst_must[u2][l2] = i
-			i += 1
-			u2 -= 1
+		x2 -= 1
+		y2 += 1
 		up += 1
-		down -= 1
-		left += 1
+		while y2 < down and i < maxx:
+			lst_must[y2][x2] = i
+			y2 += 1
+			i += 1
+		y2 -= 1
+		x2 -= 1
 		right -= 1
+		while  x2 >= left and i < maxx:
+			lst_must[y2][x2] = i
+			x2 -= 1
+			i += 1
+		x2 += 1
+		y2 -= 1
+		down -= 1
+		while y2 >= up and i < maxx:
+			lst_must[y2][x2] = i
+			i += 1
+			y2 -= 1
+
+		y2 += 1
+		x2 += 1
+		left += 1
 	return lst_must
+
