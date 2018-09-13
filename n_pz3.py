@@ -1,5 +1,5 @@
- # This puzzle is solvable
-				3#leleleled
-1 2 7 
-3 4 6
- 8  0 5
+# This puzzle is solvable
+3
+7 8 0
+4 6 1
+5 2 3

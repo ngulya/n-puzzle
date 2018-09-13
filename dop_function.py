@@ -47,6 +47,57 @@ def variant(lst_pz, size, side):
 			return True, lst_pz
 	return False, -1
 
+
+
+
+def heuristic_MH_h_v(lst_pz,lst_must, sz):
+	sum_e = 0
+	sum_not_mest = 0
+	x = 0
+	while x < sz:
+		y = 0
+		nms = 0
+		while y < sz:
+			if lst_pz[x][y] != 0:
+				if lst_pz[x][y] != lst_must[x][y]:
+					sum_not_mest += 1
+					xmst, ymst = np.nonzero(lst_must == lst_pz[x][y])
+					xmst = xmst[0]
+					ymst = ymst[0]
+					pox = xmst - x
+					poy = ymst - y
+					if pox < 0: pox = -pox
+					if poy <= 0: poy = -poy
+					sum_e += (poy + pox)
+					nms += 1
+					if nms > 1:
+						price = 1
+						if x == 0 or y == 0 or x == sz - 1 or y == sz - 1:
+							price = 2
+						# price = 2
+						sum_e += price
+			y += 1
+		x += 1
+	y = 0
+	while y < sz:
+		x = 0
+		nms = 0
+		while x < sz:
+			if lst_pz[x][y] != 0:
+				if lst_pz[x][y] != lst_must[x][y]:
+					nms += 1
+					if nms > 1:
+						price = 1
+						if x == 0 or y == 0 or x == sz - 1 or y == sz - 1:
+							price = 2
+						# price = 2
+						sum_e += price
+					
+			x += 1
+		y += 1
+	return sum_e
+
+
 def heuristic_MH(lst_pz,lst_must, sz):
 	# print 'heuristic_MH'
 	sum_e = 0

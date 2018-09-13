@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+from time import time
 import sys
-from dop_function import ERR,heuristic_MH,return_correct_lst, parsing_arg,closed_append,have_this_in_closed, variant
+from dop_function import ERR,heuristic_MH,heuristic_MH_h_v,return_correct_lst, parsing_arg,closed_append,have_this_in_closed, variant
 import numpy as np
 
 sys.setrecursionlimit(10000) # DELETEEE
@@ -78,7 +79,7 @@ def opened_append(closed, opened, lst_pz, parents, g, h, act):
 			# exit(1)
 		
 
-def new_variants(opened, closed):
+def new_variants(opened, closed, flg):
 	# global ss 
 	# ss += 1
 	# print ss
@@ -93,7 +94,7 @@ def new_variants(opened, closed):
 		lst_now = closed[-1][4].copy()
 		g_now = closed[-1][1]
 		parents_from_c_to_o = 0
-		raw_input(':->')
+		# raw_input(':->')
 	else:
 		
 		# print '-------'
@@ -139,7 +140,10 @@ def new_variants(opened, closed):
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_r) == False:
 				# print 'r', lst_r
-				h = heuristic_MH(lst_r, lst_must, frst_digit)
+				if flg == 0:
+					h = heuristic_MH(lst_r, lst_must, frst_digit)
+				elif flg == 1:
+					h = heuristic_MH_h_v(lst_r, lst_must, frst_digit)
 				if h == 0:
 					print_answer(closed, lst_r, lst_now, parents_from_c_to_o)
 					return
@@ -157,7 +161,10 @@ def new_variants(opened, closed):
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_l) == False:
 				# print 'l', lst_l
-				h = heuristic_MH(lst_l, lst_must, frst_digit)
+				if flg == 0:
+					h = heuristic_MH(lst_l, lst_must, frst_digit)
+				elif flg == 1:
+					h = heuristic_MH_h_v(lst_l, lst_must, frst_digit)
 				if h == 0:
 					print_answer(closed, lst_l, lst_now, parents_from_c_to_o)
 					return
@@ -175,7 +182,10 @@ def new_variants(opened, closed):
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_d) == False:
 				# print 'd', lst_d
-				h = heuristic_MH(lst_d, lst_must, frst_digit)
+				if flg == 0:
+					h = heuristic_MH(lst_d, lst_must, frst_digit)
+				elif flg == 1:
+					h = heuristic_MH_h_v(lst_d, lst_must, frst_digit)
 				if h == 0:
 					print_answer(closed, lst_d, lst_now, parents_from_c_to_o)
 					return
@@ -193,7 +203,10 @@ def new_variants(opened, closed):
 		if status:#and have_close and have_open
 			if have_this_in_closed(closed, lst_u) == False:
 				# print 'u', lst_u
-				h = heuristic_MH(lst_u, lst_must, frst_digit)
+				if flg == 0:
+					h = heuristic_MH(lst_u, lst_must, frst_digit)
+				elif flg == 1:
+					h = heuristic_MH_h_v(lst_u, lst_must, frst_digit)
 				if h == 0:
 					
 					print_answer(closed, lst_u, lst_now, parents_from_c_to_o)
@@ -210,7 +223,7 @@ def new_variants(opened, closed):
 
 
 	
-	new_variants( opened, closed)
+	new_variants(opened, closed, flg)
 
 def print_answer(opened, lst,lst_now, parents):
 
@@ -259,10 +272,10 @@ def can_solved(lst_pz, lst_must, size):
 		saved[i].append(1)
 		i2 += 1
 	saved = np.reshape(saved, (size + 2, size + 2))
-	print saved, '\n'
+	# print saved, '\n'
 
 
-	print lst_pz, '\n'
+	# print lst_pz, '\n'
 
 	sums = 0
 	y = 1
@@ -372,9 +385,15 @@ def can_solved(lst_pz, lst_must, size):
 			# exit()
 		# print 'nums',nums , sums
 		nums -= 1
-	print 'sums = ',sums
-	print sums % 2, 'sums % 2' 
+	# print 'sums = ',sums
+	# print sums % 2, 'sums % 2' 
 
+	if sums % 2 == 1:
+		# print 'Unsolved'
+		return False
+	# else:
+	# 	print 'Can solved'
+	return True
 
 
 
@@ -389,12 +408,15 @@ if __name__ == "__main__":
 	# print 'k = ',k
 	# exit()
 
-	can_solved(lst_pz,lst_must , frst_digit)
 
-	exit()
 	if np.array_equal(lst_pz, lst_must):
 		print 'Error 55: correct puzzle'
 		sys.exit(1)
+
+	if can_solved(lst_pz,lst_must , frst_digit) == False:
+		print 'Error 65: Unsolved puzzle'
+		sys.exit(1)
+
 	# print '||||||||'
 	# print lst_pz
 	# print '||||||||\n'
@@ -411,13 +433,16 @@ if __name__ == "__main__":
 
 	ss = 0
 	closed_append(closed, lst_pz, parents = parents_c, g = 0, h = heuristic_MH(lst_pz, lst_must, frst_digit))#start
-	new_variants(opened, closed)
+	t0 = time()
+	new_variants(opened, closed,1)
+	t1 = time()
+	print 'time solved %f' %(t1-t0)
+
 	# print closed[0]
 	# print '___'
 	# print opened[0]
 	# print '___'
 	# print opened[1]
-
 
 
 
