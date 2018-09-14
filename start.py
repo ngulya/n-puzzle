@@ -2,7 +2,7 @@
 
 from time import time
 import sys
-from dop_function import ERR,heuristic_MH,heuristic_MH_h_v,can_solved,return_correct_lst, parsing_arg,closed_append,have_this_in_closed, variant
+from dop_function import ERR,heuristic_MH,heuristic_MH_h_v,heuristic_num_no_pos,from_input_to_int,can_solved,return_correct_lst, parsing_arg,closed_append,have_this_in_closed, variant
 import numpy as np
 
 sys.setrecursionlimit(10000) # DELETEEE
@@ -62,7 +62,7 @@ def opened_append(closed, opened, lst_pz, parents, g, h, act, nums_opened):
 		
 
 def new_variants(opened, closed, flg):
-	global nums_opened,t1, g_input,hmin
+	global nums_opened,t1, g_input,hmin,linear_kof
 	# global ss 
 	# ss += 1
 	# print ss
@@ -95,40 +95,40 @@ def new_variants(opened, closed, flg):
 		status, lst_r = variant(lst_now.copy(), frst_digit, 'r')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_r) == False:
-				# print 'r', lst_r
-				if flg == 0:
+				if flg == 1:
 					h = heuristic_MH(lst_r, lst_must, frst_digit)
-				elif flg == 1:
+				elif flg == 2:
 					h, wow = heuristic_MH_h_v(lst_r, lst_must, frst_digit)
-					h += (wow * g_input)
-				if h < hmin:
-					hmin = h
-					print h
+					h += (wow * linear_kof)
+				elif flg == 3:
+					h = heuristic_num_no_pos(lst_r, lst_must, frst_digit)
+				# if h < hmin:
+				# 	hmin = h
+				# 	print h
 				if h == 0:
 					t1 = time()
 					print_answer(closed, lst_r, lst_now, parents_from_c_to_o)
 					return
-				# print 'g = ',g_now + 1, 'h = ', h
 				nums_opened = opened_append(closed = closed, opened = opened, lst_pz = lst_r, parents = parents_from_c_to_o, g = g_now + g_input, h = h, act = 1, nums_opened = nums_opened)
 
 	if last_act != 1:
 		status, lst_l = variant(lst_now.copy(), frst_digit, 'l')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_l) == False:
-				# print 'l', lst_l
-				if flg == 0:
+				if flg == 1:
 					h = heuristic_MH(lst_l, lst_must, frst_digit)
-				elif flg == 1:
+				elif flg == 2:
 					h, wow = heuristic_MH_h_v(lst_l, lst_must, frst_digit)
-					h += (wow * g_input)
-				if h < hmin:
-					hmin = h
-					print h
+					h += (wow * linear_kof)
+				elif flg == 3:
+					h = heuristic_num_no_pos(lst_l, lst_must, frst_digit)
+				# if h < hmin:
+				# 	hmin = h
+				# 	print h
 				if h == 0:
 					t1 = time()
 					print_answer(closed, lst_l, lst_now, parents_from_c_to_o)
 					return
-				# print 'g = ',g_now + 1, 'h = ', h
 				nums_opened = opened_append(closed = closed, opened = opened, lst_pz = lst_l, parents = parents_from_c_to_o, g = g_now + g_input, h = h, act = 2, nums_opened = nums_opened)
 
 
@@ -136,20 +136,20 @@ def new_variants(opened, closed, flg):
 		status, lst_d = variant(lst_now.copy(), frst_digit, 'd')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_d) == False:
-				# print 'd', lst_d
-				if flg == 0:
+				if flg == 1:
 					h = heuristic_MH(lst_d, lst_must, frst_digit)
-				elif flg == 1:
+				elif flg == 2:
 					h, wow = heuristic_MH_h_v(lst_d, lst_must, frst_digit)
-					h += (wow * g_input)
-				if h < hmin:
-					hmin = h
-					print h
+					h += (wow * linear_kof)
+				elif flg == 3:
+					h = heuristic_num_no_pos(lst_d, lst_must, frst_digit)
+				# if h < hmin:
+				# 	hmin = h
+				# 	print h
 				if h == 0:
 					t1 = time()
 					print_answer(closed, lst_d, lst_now, parents_from_c_to_o)
 					return
-				# print 'g = ',g_now + 1, 'h = ', h
 				nums_opened = opened_append(closed = closed, opened = opened, lst_pz = lst_d, parents = parents_from_c_to_o, g = g_now + g_input, h = h, act = 3, nums_opened = nums_opened)
 
 	if last_act != 3:
@@ -157,19 +157,20 @@ def new_variants(opened, closed, flg):
 		if status:#and have_close and have_open
 			if have_this_in_closed(closed, lst_u) == False:
 				# print 'u', lst_u
-				if flg == 0:
+				if flg == 1:
 					h = heuristic_MH(lst_u, lst_must, frst_digit)
-				elif flg == 1:
+				elif flg == 2:
 					h, wow = heuristic_MH_h_v(lst_u, lst_must, frst_digit)
-					h += (wow * g_input)
-				if h < hmin:
-					hmin = h
-					print h
+					h += (wow * linear_kof)
+				elif flg == 3:
+					h = heuristic_num_no_pos(lst_u, lst_must, frst_digit)
+				# if h < hmin:
+				# 	hmin = h
+				# 	print h
 				if h == 0:
 					t1 = time()
 					print_answer(closed, lst_u, lst_now, parents_from_c_to_o)
 					return
-				# print 'g = ',g_now + 1, 'h = ', h
 				nums_opened = opened_append(closed = closed, opened = opened, lst_pz = lst_u, parents = parents_from_c_to_o, g = g_now + g_input, h = h, act = 4, nums_opened = nums_opened)
 
 
@@ -200,13 +201,10 @@ def print_answer(opened, lst,lst_now, parents):
 
 
 
-
 if __name__ == "__main__":
 	
 	lst_pz, frst_digit = parsing_arg()
-
 	lst_must = return_correct_lst(frst_digit)
-
 
 	if np.array_equal(lst_pz, lst_must):
 		print 'Error 55: correct puzzle'
@@ -219,7 +217,6 @@ if __name__ == "__main__":
 	solved = False
 	unsolved = False
 
-
 	closed = []
 	opened = []
 	
@@ -229,27 +226,14 @@ if __name__ == "__main__":
 	closed_append(closed, lst_pz, parents = parents_c, g = 0, h = heuristic_MH(lst_pz, lst_must, frst_digit))#start
 	nums_opened = 0
 	bad = True
-	g_input = 1
-	# while bad:
-	# 	gm = raw_input('input g > 0:')
-	# 	try:
-	# 		int(gm)
-	# 	except Exception as e:
-	# 		g_input = 1
-	# 		print 'g_input = 1'
-	# 		break
-		
-	# 	if int(gm) > 0 and gm < 10:
-	# 		g_input = int(gm)
-	# 	else:
-	# 		print 'Error: g > 0 and g < 10'
+	g_input = from_input_to_int('g')
+	linear_kof = from_input_to_int('l')
+	flg = from_input_to_int('f')
 	t0 = time()
 	t1 = 0
-	hmin = 999999999999999999999
-	new_variants(opened, closed,1)
+	hmin = frst_digit ** 3
+	new_variants(opened, closed,flg)
 
 	print 'time solved %f' %(t1-t0)
-
 	print 'in opened = ',nums_opened#?
 	print 'in closed = ',len(closed)#?
-	

@@ -199,9 +199,8 @@ def can_solved(lst_pz, lst_must, size):
 
 
 
-def heuristic_MH(lst_pz,lst_must, sz):
-	# print 'heuristic_MH'
-	sum_e = 0
+def heuristic_num_no_pos(lst_pz,lst_must, sz):
+
 	sum_not_mest = 0
 	x = 0
 	while x < sz:
@@ -210,23 +209,29 @@ def heuristic_MH(lst_pz,lst_must, sz):
 			if lst_pz[x][y] != 0:#maybe
 				if lst_pz[x][y] != lst_must[x][y]:
 					sum_not_mest += 1
-					# print lst_pz[x][y]
+			y += 1
+		x += 1
+	return sum_not_mest
+
+def heuristic_MH(lst_pz,lst_must, sz):
+	# print 'heuristic_MH'
+	sum_e = 0
+	x = 0
+	while x < sz:
+		y = 0
+		while y < sz:
+			if lst_pz[x][y] != 0:#maybe
+				if lst_pz[x][y] != lst_must[x][y]:
 					xmst, ymst = np.nonzero(lst_must == lst_pz[x][y])
 					xmst = xmst[0]
 					ymst = ymst[0]
-					# print x, y
-					# print xmst, ymst
 					pox = xmst - x
 					poy = ymst - y
 					if pox < 0: pox = -pox
 					if poy <= 0: poy = -poy
-					# print 'poy = ',poy ,' pox = ', pox
-					# print 'H = ', poy + pox,'\n'
 					sum_e += (poy + pox)
 			y += 1
 		x += 1
-	# print sum_e
-	# print sum_not_mest
 	return sum_e
 
 
@@ -519,3 +524,59 @@ def return_correct_lst(size):
 		left += 1
 	return lst_must
 
+
+def from_input_to_int(variant):
+	if variant == 'g':
+		g_input = 1
+		bad = True
+		while bad:
+			gm = raw_input('\ninput g > 0: ')
+			try:
+				int(gm)
+			except Exception as e:
+				g_input = 1
+				print 'g_input = 1'
+				break
+			if int(gm) > 0 and int(gm) < 10:
+				g_input = int(gm)
+				break
+			else:
+				print 'Error: g > 0 and g < 10'
+		return g_input
+	elif variant == 'l':
+		linear_kof = 2
+		bad = True
+		while bad:
+			gm = raw_input('\ninput linear_kof >= 0: ')
+			try:
+				int(gm)
+			except Exception as e:
+				linear_kof = 2
+				print 'linear_kof = 2'
+				break
+			
+			if int(gm) >= 0 and int(gm) < 10:
+				linear_kof = int(gm)
+				break
+			else:
+				print 'Error: linear_kof >= 0 and linear_kof < 10'
+		return linear_kof
+	elif variant == 'f':
+		flg = 1
+		bad = True
+		print '\n1-heuristic_MH\n2-heuristic_MH_h_v\n3-heuristic_num_no_pos'
+		while bad:
+			gm = raw_input('input flg 1/2/3: ')
+			try:
+				int(gm)
+			except Exception as e:
+				flg = 1
+				print 'flg = 1'
+				break
+			
+			if int(gm) > 0 and int(gm) < 4:
+				flg = int(gm)
+				break
+			else:
+				print 'Error: flg > 0 and flg < 4'
+		return flg
