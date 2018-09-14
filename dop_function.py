@@ -564,7 +564,7 @@ def from_input_to_int(variant):
 	elif variant == 'f':
 		flg = 1
 		bad = True
-		print '\n1-heuristic_MH\n2-heuristic_MH_h_v\n3-heuristic_num_no_pos'
+		print '\n0-greedy\n1-heuristic_MH\n2-heuristic_MH_h_v\n3-heuristic_num_no_pos'
 		while bad:
 			gm = raw_input('input flg 1/2/3: ')
 			try:
@@ -574,9 +574,9 @@ def from_input_to_int(variant):
 				print 'flg = 1'
 				break
 			
-			if int(gm) > 0 and int(gm) < 4:
+			if int(gm) >= 0 and int(gm) < 4:
 				flg = int(gm)
 				break
 			else:
-				print 'Error: flg > 0 and flg < 4'
+				print 'Error: flg >= 0 and flg < 4'
 		return flg

@@ -95,6 +95,7 @@ def new_variants(opened, closed, flg):
 		status, lst_r = variant(lst_now.copy(), frst_digit, 'r')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_r) == False:
+				h = -1
 				if flg == 1:
 					h = heuristic_MH(lst_r, lst_must, frst_digit)
 				elif flg == 2:
@@ -105,7 +106,7 @@ def new_variants(opened, closed, flg):
 				# if h < hmin:
 				# 	hmin = h
 				# 	print h
-				if h == 0:
+				if h == 0 or (h == -1 and np.array_equal(lst_r, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_r, lst_now, parents_from_c_to_o)
 					return
@@ -115,6 +116,7 @@ def new_variants(opened, closed, flg):
 		status, lst_l = variant(lst_now.copy(), frst_digit, 'l')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_l) == False:
+				h = -1
 				if flg == 1:
 					h = heuristic_MH(lst_l, lst_must, frst_digit)
 				elif flg == 2:
@@ -125,7 +127,7 @@ def new_variants(opened, closed, flg):
 				# if h < hmin:
 				# 	hmin = h
 				# 	print h
-				if h == 0:
+				if h == 0 or (h == -1 and np.array_equal(lst_l, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_l, lst_now, parents_from_c_to_o)
 					return
@@ -136,6 +138,7 @@ def new_variants(opened, closed, flg):
 		status, lst_d = variant(lst_now.copy(), frst_digit, 'd')
 		if status:#and have_close
 			if have_this_in_closed(closed, lst_d) == False:
+				h = -1
 				if flg == 1:
 					h = heuristic_MH(lst_d, lst_must, frst_digit)
 				elif flg == 2:
@@ -146,7 +149,7 @@ def new_variants(opened, closed, flg):
 				# if h < hmin:
 				# 	hmin = h
 				# 	print h
-				if h == 0:
+				if h == 0 or (h == -1 and np.array_equal(lst_d, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_d, lst_now, parents_from_c_to_o)
 					return
@@ -157,6 +160,7 @@ def new_variants(opened, closed, flg):
 		if status:#and have_close and have_open
 			if have_this_in_closed(closed, lst_u) == False:
 				# print 'u', lst_u
+				h = -1
 				if flg == 1:
 					h = heuristic_MH(lst_u, lst_must, frst_digit)
 				elif flg == 2:
@@ -167,7 +171,7 @@ def new_variants(opened, closed, flg):
 				# if h < hmin:
 				# 	hmin = h
 				# 	print h
-				if h == 0:
+				if h == 0 or (h == -1 and np.array_equal(lst_u, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_u, lst_now, parents_from_c_to_o)
 					return
