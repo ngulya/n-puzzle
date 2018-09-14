@@ -48,54 +48,155 @@ def variant(lst_pz, size, side):
 	return False, -1
 
 
+def can_solved(lst_pz, lst_must, size):
 
 
-def heuristic_MH_h_v(lst_pz,lst_must, sz):
-	sum_e = 0
-	sum_not_mest = 0
+	saved = []
+	i = 0
+	saved.append([])
+	i2 = 0
+	while i2 < size + 2:
+		saved[i].append(1)
+		i2 += 1
+	i += 1
+	while i < size + 1:
+		saved.append([])
+		i2 = 0
+		saved[i].append(1)
+		while i2 < size:
+			saved[i].append(0)
+			i2 += 1
+		saved[i].append(1)
+		i += 1
+	saved.append([])
+	i2 = 0
+	while i2 < size + 2:
+		saved[i].append(1)
+		i2 += 1
+	saved = np.reshape(saved, (size + 2, size + 2))
+	# print saved, '\n'
+
+
+	# print lst_pz, '\n'
+
+	sums = 0
+	y = 1
 	x = 0
-	while x < sz:
-		y = 0
-		nms = 0
-		while y < sz:
-			if lst_pz[x][y] != 0:
-				if lst_pz[x][y] != lst_must[x][y]:
-					sum_not_mest += 1
-					xmst, ymst = np.nonzero(lst_must == lst_pz[x][y])
-					xmst = xmst[0]
-					ymst = ymst[0]
-					pox = xmst - x
-					poy = ymst - y
-					if pox < 0: pox = -pox
-					if poy <= 0: poy = -poy
-					sum_e += (poy + pox)
-					nms += 1
-					if nms > 1:
-						price = 1
-						if x == 0 or y == 0 or x == sz - 1 or y == sz - 1:
-							price = 2
-						# price = 2
-						sum_e += price
-			y += 1
-		x += 1
-	y = 0
-	while y < sz:
+	lens = 1
+	
+	nums = (size * size) - 1
+	while nums > 0:
+		lst_tmp = saved.copy()
+		yes = False
+		y = 1
 		x = 0
-		nms = 0
-		while x < sz:
-			if lst_pz[x][y] != 0:
-				if lst_pz[x][y] != lst_must[x][y]:
-					nms += 1
-					if nms > 1:
-						price = 1
-						if x == 0 or y == 0 or x == sz - 1 or y == sz - 1:
-							price = 2
-						# price = 2
-						sum_e += price
-					
+		lens = 1
+		# print 'nums', nums
+		while lens > 0:
 			x += 1
-		y += 1
-	return sum_e
+			while x < size + 2:
+				# print '|',lst_pz[y-1][x-1],'|', y, x
+				now = lst_pz[y-1][x-1]
+				if now == nums:
+					yes = True
+				if yes and now != 0 and now < nums:
+					sums += 1
+				# for h in mas:
+				# 	if h > now:
+				# 		sums += 1
+				lst_tmp[y][x] = 1
+				if lst_tmp[y][x + 1] == 1:
+					break
+				x += 1
+			# print 'vpravo\n'
+			
+			xm0, ym0 = np.nonzero(lst_tmp == 0)
+			lens = len(xm0)
+			y += 1
+			if lens > 0:
+				while y < size + 2:
+					# print y, x
+					now = lst_pz[y-1][x-1]
+					if now == nums:
+						yes = True
+					if yes and now != 0 and now < nums:
+						sums += 1
+					# print '|',lst_pz[y-1][x-1],'|'
+					# now = lst_pz[y-1][x-1]
+					# for h in mas:
+					# 	if h > now:
+					# 		sums += 1
+					lst_tmp[y][x] = 1
+					if lst_tmp[y + 1][x] == 1:
+						break
+					y += 1
+				# print 'vnz\n'
+			else:
+				break
+			
+			
+			xm0, ym0 = np.nonzero(lst_tmp == 0)
+			lens = len(xm0)
+			x -= 1
+			if lens > 0:
+				while x > 0:
+					now = lst_pz[y-1][x-1]
+					if now == nums:
+						yes = True
+					if yes and now != 0 and now < nums:
+						sums += 1
+					# print '|',lst_pz[y-1][x-1],'|'
+					# now = lst_pz[y-1][x-1]
+					# for h in mas:
+					# 	if h > now:
+					# 		sums += 1
+					lst_tmp[y][x] = 1
+					if lst_tmp[y][x - 1] == 1:
+						break
+					x -= 1
+				# print 'vlevo\n'
+			else:
+				break
+			xm0, ym0 = np.nonzero(lst_tmp == 0)
+			lens = len(xm0)
+			y -= 1
+			if lens > 0:	
+				while y > 0:
+					now = lst_pz[y-1][x-1]
+					if now == nums:
+						yes = True
+					if yes and now != 0 and now < nums:
+						sums += 1
+
+					# print '|',lst_pz[y-1][x-1],'|'
+					# now = lst_pz[y-1][x-1]
+					# for h in mas:
+					# 	if h > now:
+					# 		sums += 1
+					lst_tmp[y][x] = 1
+					if lst_tmp[y - 1][x] == 1:
+						break
+					y -= 1
+				# print 'vverh\n'
+			else:
+				break
+			xm0, ym0 = np.nonzero(lst_tmp == 0)
+			lens = len(xm0)
+			# print '\n'
+			# print 'xm0 = ',xm0, lens
+			# exit()
+		# print 'nums',nums , sums
+		nums -= 1
+	# print 'sums = ',sums
+	# print sums % 2, 'sums % 2' 
+
+	if sums % 2 == 1:
+		# print 'Unsolved'
+		return False
+	# else:
+	# 	print 'Can solved'
+	return True
+
 
 
 def heuristic_MH(lst_pz,lst_must, sz):
@@ -127,6 +228,127 @@ def heuristic_MH(lst_pz,lst_must, sz):
 	# print sum_e
 	# print sum_not_mest
 	return sum_e
+
+
+def heuristic_MH_h_v(lst_pz,lst_must, sz):
+	
+	k = 0
+	up = 0
+	left = 0
+	right = sz
+	down = sz
+	maxx = (sz ** 2)
+	i = 1
+	sum_e = heuristic_MH(lst_pz, lst_must, sz)
+	wow = 0
+	while i < maxx:
+
+		frst_t = True
+		y2 = up
+		x2 = left
+		lst_tmp = []
+		num = 0
+		while x2 < right and i < maxx:######1
+			now = lst_pz[y2][x2]
+			if frst_t:
+				frst_t = False
+				st = lst_must[y2][x2]
+				en = st + right - x2 - 1
+			if now >= st and now <= en:
+				lst_tmp.append(now)
+				num += 1
+			x2 += 1
+			i += 1
+		if len(lst_tmp) > 1:
+			num1 = 0
+			while num1 < num:##########wow
+				num2 = num1 + 1
+				lst_tmp_num1 = lst_tmp[num1]
+
+				while num2 < num:
+					if lst_tmp[num2] < lst_tmp_num1:
+						wow += 1
+					num2 += 1
+				num1 += 1
+		##############################
+
+		frst_t = True
+		x2 -= 1
+		y2 += 1
+		up += 1
+		lst_tmp = []
+		while y2 < down and i < maxx:######2
+			if frst_t:
+				frst_t = False
+				st = lst_must[y2][x2]
+				en = st + down - y2 - 1
+			y2 += 1
+			i += 1
+		if len(lst_tmp) > 1:
+			num1 = 0
+			while num1 < num:##########wow
+				num2 = num1 + 1
+				lst_tmp_num1 = lst_tmp[num1]
+				while num2 < num:
+					if lst_tmp[num2] < lst_tmp_num1:
+						wow += 1
+					num2 += 1
+				num1 += 1
+			#################################
+
+		frst_t = True
+		lst_tmp = []
+		y2 -= 1
+		x2 -= 1
+		right -= 1
+		while  x2 >= left and i < maxx:######3
+			if frst_t:
+				frst_t = False
+				st = lst_must[y2][x2]
+				en = st + x2 - left
+			x2 -= 1
+			i += 1
+		if len(lst_tmp) > 1:
+			num1 = 0
+			while num1 < num:##########wow
+				num2 = num1 + 1
+				lst_tmp_num1 = lst_tmp[num1]
+				while num2 < num:
+					if lst_tmp[num2] < lst_tmp_num1:
+						wow += 1
+					num2 += 1
+				num1 += 1
+		#################################
+
+		frst_t = True
+		lst_tmp = []
+		x2 += 1
+		y2 -= 1
+		down -= 1
+		while y2 >= up and i < maxx:######4
+			# print y2, up
+			if frst_t:
+				frst_t = False
+				st = lst_must[y2][x2]
+				en = st + y2 - up
+			i += 1
+			y2 -= 1
+		if len(lst_tmp) > 1:
+			num1 = 0
+			while num1 < num:##########wow
+				num2 = num1 + 1
+				lst_tmp_num1 = lst_tmp[num1]
+				while num2 < num:
+					if lst_tmp[num2] < lst_tmp_num1:
+						wow += 1
+					num2 += 1
+				num1 += 1
+		y2 += 1
+		x2 += 1
+		left += 1
+
+	return sum_e, wow
+
 
 
 def parsing_arg():
@@ -177,6 +399,9 @@ def parsing_arg():
 			if ok == 0:
 				ERR('Error 42: invalid map')
 			start -= 1
+		lst_pz = np.reshape(lst_pz, (frst_digit, frst_digit))
+		print 'From file pzzl'
+		print lst_pz
 	elif len(sys.argv) == 4:
 		frst_digit = 0
 		solv = False
@@ -200,11 +425,21 @@ def parsing_arg():
 
 		if sys.argv[3].isdigit():
 			iterr = int(sys.argv[3])
-		if iterr < 0 or iterr > 200000:
+		if iterr < 1 or iterr > 200000:
 			print './start.py [size] [-s, solve OR -u, unsolve] [iterations]\niterations must be digit > 0 and < 200000'
 			sys.exit(1)
-		lst_pz = make_puzzle(frst_digit, solvable=solv, iterations=iterr)#-s and his solved correct
-		print_pz(frst_digit, solv, lst_pz)#check solve
+		
+		lst_must = return_correct_lst(frst_digit)
+		
+		bad = True
+		while bad:
+			lst_pz_str = make_puzzle(frst_digit, solvable=solv, iterations=iterr)#-s and his solved correct
+			lst_pz = np.reshape(lst_pz_str, (frst_digit, frst_digit))
+			if np.array_equal(lst_pz, lst_must) == False:
+				bad = False
+				print_pz(frst_digit, solv, lst_pz_str)
+			else:
+				print 'VBAD'
 	else:
 		print './start.py [name_file]\n./start.py [size] [-s, solve OR -u, unsolve] [iterations]'
 		sys.exit(1)
