@@ -5,7 +5,7 @@ import sys
 from dop_function import ERR,heuristic_MH,heuristic_MH_h_v,heuristic_num_no_pos,from_input_to_int,can_solved,return_correct_lst, parsing_arg,closed_append,have_this_in_closed, variant
 import numpy as np
 
-sys.setrecursionlimit(10000) # DELETEEE
+sys.setrecursionlimit(1000000000) # DELETEEE
 
 # print np.array_equal(lst_pz, lst_must)
 # heuristic_MH(lst_pz, lst_must, frst_digit)
@@ -103,9 +103,9 @@ def new_variants(opened, closed, flg):
 					h += (wow * linear_kof)
 				elif flg == 3:
 					h = heuristic_num_no_pos(lst_r, lst_must, frst_digit)
-				# if h < hmin:
-				# 	hmin = h
-				# 	print h
+				if h < hmin:
+					hmin = h
+					print h
 				if h == 0 or (h == -1 and np.array_equal(lst_r, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_r, lst_now, parents_from_c_to_o)
@@ -124,9 +124,9 @@ def new_variants(opened, closed, flg):
 					h += (wow * linear_kof)
 				elif flg == 3:
 					h = heuristic_num_no_pos(lst_l, lst_must, frst_digit)
-				# if h < hmin:
-				# 	hmin = h
-				# 	print h
+				if h < hmin:
+					hmin = h
+					print h
 				if h == 0 or (h == -1 and np.array_equal(lst_l, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_l, lst_now, parents_from_c_to_o)
@@ -146,9 +146,9 @@ def new_variants(opened, closed, flg):
 					h += (wow * linear_kof)
 				elif flg == 3:
 					h = heuristic_num_no_pos(lst_d, lst_must, frst_digit)
-				# if h < hmin:
-				# 	hmin = h
-				# 	print h
+				if h < hmin:
+					hmin = h
+					print h
 				if h == 0 or (h == -1 and np.array_equal(lst_d, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_d, lst_now, parents_from_c_to_o)
@@ -168,9 +168,9 @@ def new_variants(opened, closed, flg):
 					h += (wow * linear_kof)
 				elif flg == 3:
 					h = heuristic_num_no_pos(lst_u, lst_must, frst_digit)
-				# if h < hmin:
-				# 	hmin = h
-				# 	print h
+				if h < hmin:
+					hmin = h
+					print h
 				if h == 0 or (h == -1 and np.array_equal(lst_u, lst_must)):
 					t1 = time()
 					print_answer(closed, lst_u, lst_now, parents_from_c_to_o)
@@ -191,7 +191,7 @@ def print_answer(opened, lst,lst_now, parents):
 		parents = closed[parents][3]
 	print 'num all operations = ', alls
 	
-	anss = raw_input('step by step Y-Yes:')
+	anss = raw_input('\nstep by step Y-Yes:')
 	n = len(new_lst) - 1
 	n2 = len(new_lst) - 1
 	while n >= 0:
@@ -231,8 +231,10 @@ if __name__ == "__main__":
 	nums_opened = 0
 	bad = True
 	g_input = from_input_to_int('g')
-	linear_kof = from_input_to_int('l')
+	linear_kof = 2
 	flg = from_input_to_int('f')
+	if flg == 2:
+		linear_kof = from_input_to_int('l')
 	t0 = time()
 	t1 = 0
 	hmin = frst_digit ** 3

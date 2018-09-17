@@ -236,122 +236,136 @@ def heuristic_MH(lst_pz,lst_must, sz):
 
 
 def heuristic_MH_h_v(lst_pz,lst_must, sz):
-	
+	# print lst_must
+	# print 
+	# print lst_pz
+
 	k = 0
 	up = 0
 	left = 0
 	right = sz
 	down = sz
-	maxx = (sz ** 2)
+	maxx = (sz * sz)
 	i = 1
 	sum_e = heuristic_MH(lst_pz, lst_must, sz)
 	wow = 0
+	lst_tmp = []
+	num = 0
 	while i < maxx:
 
 		frst_t = True
 		y2 = up
 		x2 = left
-		lst_tmp = []
-		num = 0
+		# print 
+		st = lst_must[y2][x2]
+		en = st + right - x2 - 1
 		while x2 < right and i < maxx:######1
+			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
+			# if frst_t:
+			# 	frst_t = False
+			# 	st = lst_must[y2][x2]
+			# 	en = st + right - x2 - 1
+				# print 'st ',st, 'end',en
 			now = lst_pz[y2][x2]
-			if frst_t:
-				frst_t = False
-				st = lst_must[y2][x2]
-				en = st + right - x2 - 1
 			if now >= st and now <= en:
 				lst_tmp.append(now)
 				num += 1
 			x2 += 1
 			i += 1
-		if len(lst_tmp) > 1:
-			num1 = 0
-			while num1 < num:##########wow
-				num2 = num1 + 1
-				lst_tmp_num1 = lst_tmp[num1]
 
-				while num2 < num:
-					if lst_tmp[num2] < lst_tmp_num1:
-						wow += 1
-					num2 += 1
-				num1 += 1
-		##############################
 
 		frst_t = True
 		x2 -= 1
-		y2 += 1
+		# y2 += 1
 		up += 1
-		lst_tmp = []
+		# print 
+		st = lst_must[y2][x2]
+		en = st + down - y2 - 1
 		while y2 < down and i < maxx:######2
-			if frst_t:
-				frst_t = False
-				st = lst_must[y2][x2]
-				en = st + down - y2 - 1
+			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
+			# if frst_t:
+			# 	frst_t = False
+			# 	st = lst_must[y2][x2]
+			# 	en = st + down - y2 - 1
+				# print 'st ',st, 'end',en
+			now = lst_pz[y2][x2]
+			if now >= st and now <= en:
+				lst_tmp.append(now)
+				num += 1
 			y2 += 1
 			i += 1
-		if len(lst_tmp) > 1:
-			num1 = 0
-			while num1 < num:##########wow
-				num2 = num1 + 1
-				lst_tmp_num1 = lst_tmp[num1]
-				while num2 < num:
-					if lst_tmp[num2] < lst_tmp_num1:
-						wow += 1
-					num2 += 1
-				num1 += 1
-			#################################
+
+
 
 		frst_t = True
-		lst_tmp = []
 		y2 -= 1
-		x2 -= 1
+		# x2 -= 1
 		right -= 1
+		# print 
+		st = lst_must[y2][x2]
+		en = st + x2 - left
 		while  x2 >= left and i < maxx:######3
-			if frst_t:
-				frst_t = False
-				st = lst_must[y2][x2]
-				en = st + x2 - left
+			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
+			# if frst_t:
+			# 	frst_t = False
+			# 	st = lst_must[y2][x2]
+			# 	en = st + x2 - left
+				# print 'st ',st, 'end',en
+			now = lst_pz[y2][x2]
+			if now >= st and now <= en:
+				lst_tmp.append(now)
+				num += 1
 			x2 -= 1
 			i += 1
-		if len(lst_tmp) > 1:
-			num1 = 0
-			while num1 < num:##########wow
-				num2 = num1 + 1
-				lst_tmp_num1 = lst_tmp[num1]
-				while num2 < num:
-					if lst_tmp[num2] < lst_tmp_num1:
-						wow += 1
-					num2 += 1
-				num1 += 1
-		#################################
 
+
+
+
+
+		
 		frst_t = True
-		lst_tmp = []
 		x2 += 1
-		y2 -= 1
+		# y2 -= 1
 		down -= 1
+		st = lst_must[y2][x2]
+		en = st + y2 - up
+		# print 
 		while y2 >= up and i < maxx:######4
-			# print y2, up
-			if frst_t:
-				frst_t = False
-				st = lst_must[y2][x2]
-				en = st + y2 - up
+			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
+			# if frst_t:
+			# 	frst_t = False
+			# 	st = lst_must[y2][x2]
+			# 	en = st + y2 - up
+				# print 'st ',st, 'end',en
+			now = lst_pz[y2][x2]
+			if now >= st and now <= en:
+				lst_tmp.append(now)
+				num += 1
 			i += 1
 			y2 -= 1
-		if len(lst_tmp) > 1:
-			num1 = 0
-			while num1 < num:##########wow
-				num2 = num1 + 1
-				lst_tmp_num1 = lst_tmp[num1]
-				while num2 < num:
-					if lst_tmp[num2] < lst_tmp_num1:
-						wow += 1
-					num2 += 1
-				num1 += 1
+
+
+		
 		y2 += 1
-		x2 += 1
+		# x2 += 1
 		left += 1
 
+
+	# print 'num = ', num
+	# print '|',lst_tmp,'|'
+	if len(lst_tmp) > 1:
+		num1 = 0
+		while num1 < num:##########wow
+			num2 = num1 + 1
+			lst_tmp_num1 = lst_tmp[num1]
+			while num2 < num:
+				if lst_tmp[num2] < lst_tmp_num1:
+					wow += 1
+				num2 += 1
+			num1 += 1
+	# print 'wow = ',wow
+	#################################
+	# raw_input('-,')
 	return sum_e, wow
 
 
@@ -488,7 +502,7 @@ def return_correct_lst(size):
 	left = 0
 	right = size
 	down = size
-	maxx = (size ** 2)
+	maxx = (size * size)
 	i = 1
 	while i < maxx:
 		y2 = up
@@ -530,18 +544,18 @@ def from_input_to_int(variant):
 		g_input = 1
 		bad = True
 		while bad:
-			gm = raw_input('\ninput g > 0: ')
+			gm = raw_input('\ninput g >= 0: ')
 			try:
 				int(gm)
 			except Exception as e:
 				g_input = 1
 				print 'g_input = 1'
 				break
-			if int(gm) > 0 and int(gm) < 10:
+			if int(gm) >= 0 and int(gm) < 10:
 				g_input = int(gm)
 				break
 			else:
-				print 'Error: g > 0 and g < 10'
+				print 'Error: g >= 0 and g < 10'
 		return g_input
 	elif variant == 'l':
 		linear_kof = 2
@@ -566,17 +580,20 @@ def from_input_to_int(variant):
 		bad = True
 		print '\n0-greedy\n1-heuristic_MH\n2-heuristic_MH_h_v\n3-heuristic_num_no_pos'
 		while bad:
-			gm = raw_input('input flg 1/2/3: ')
+			gm = raw_input('input heuristic 1/2/3: ')
 			try:
 				int(gm)
 			except Exception as e:
 				flg = 1
-				print 'flg = 1'
+				print 'heuristic = 1'
 				break
 			
 			if int(gm) >= 0 and int(gm) < 4:
 				flg = int(gm)
 				break
 			else:
-				print 'Error: flg >= 0 and flg < 4'
+				print 'Error: heuristic >= 0 and heuristic < 4'
 		return flg
+
+
+ 
