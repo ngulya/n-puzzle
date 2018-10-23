@@ -10,37 +10,28 @@ def ERR(ne):
 
 
 def variant(lst_pz, size, side):
+	x_zero, y_zero = np.nonzero(0 == lst_pz)
+	x_zero = x_zero[0]
+	y_zero = y_zero[0]
 	if side == 'l':
-		x_zero, y_zero = np.nonzero(0 == lst_pz)
-		x_zero = x_zero[0]
-		y_zero = y_zero[0]
 		if y_zero > 0:
 			lst_pz[x_zero][y_zero] = lst_pz[x_zero][y_zero - 1]
 			lst_pz[x_zero][y_zero - 1] = 0
 			return True, lst_pz
 
 	elif side == 'r':
-		x_zero, y_zero = np.nonzero(0 == lst_pz)
-		x_zero = x_zero[0]
-		y_zero = y_zero[0]
 		if y_zero < size - 1:
 			lst_pz[x_zero][y_zero] = lst_pz[x_zero][y_zero + 1]
 			lst_pz[x_zero][y_zero + 1] = 0
 			return True, lst_pz
 
 	elif side == 'u':
-		x_zero, y_zero = np.nonzero(0 == lst_pz)
-		x_zero = x_zero[0]
-		y_zero = y_zero[0]
 		if x_zero > 0:
 			lst_pz[x_zero][y_zero] = lst_pz[x_zero - 1][y_zero]
 			lst_pz[x_zero - 1][y_zero] = 0
 			return True, lst_pz
 
 	elif side == 'd':
-		x_zero, y_zero = np.nonzero(0 == lst_pz)
-		x_zero = x_zero[0]
-		y_zero = y_zero[0]
 		if x_zero < size - 1:
 			lst_pz[x_zero][y_zero] = lst_pz[x_zero + 1][y_zero]
 			lst_pz[x_zero + 1][y_zero] = 0
@@ -202,94 +193,37 @@ def heuristic_MH(lst_pz,lst_must, sz, heuristic, act):
 			x += 1
 		return sum_e
 	if heuristic != 0:
+		xmst, ymst = np.nonzero(lst_pz == 0)
+		xmst_was = xmst[0]
+		ymst_was = ymst[0]
 		if act == 'u':
-			xmst, ymst = np.nonzero(lst_pz == 0)
-			xmst_was = xmst[0]
-			ymst_was = ymst[0]
 			xmst_now = xmst[0] + 1
 			ymst_now = ymst[0]
-			num_now = lst_pz[xmst_now][ymst_now]
-			xmst, ymst = np.nonzero(lst_must == num_now)
-			xmst_must = xmst[0]
-			ymst_must = ymst[0]
-			pox = xmst_must - xmst_was
-			poy = ymst_must - ymst_was
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			was = (poy + pox)
-			pox = xmst_must - xmst_now
-			poy = ymst_must - ymst_now
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			now = (poy + pox)
-			heuristic -= was
-			heuristic += now
 		elif act == 'd':
-			xmst, ymst = np.nonzero(lst_pz == 0)
-			xmst_was = xmst[0]
-			ymst_was = ymst[0]
 			xmst_now = xmst[0] - 1
 			ymst_now = ymst[0]
-			num_now = lst_pz[xmst_now][ymst_now]
-			xmst, ymst = np.nonzero(lst_must == num_now)
-			xmst_must = xmst[0]
-			ymst_must = ymst[0]
-			pox = xmst_must - xmst_was
-			poy = ymst_must - ymst_was
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			was = (poy + pox)
-			pox = xmst_must - xmst_now
-			poy = ymst_must - ymst_now
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			now = (poy + pox)
-			heuristic -= was
-			heuristic += now
 		elif act == 'l':
-			xmst, ymst = np.nonzero(lst_pz == 0)
-			xmst_was = xmst[0]
-			ymst_was = ymst[0]
 			xmst_now = xmst[0]
 			ymst_now = ymst[0] + 1
-			num_now = lst_pz[xmst_now][ymst_now]
-			xmst, ymst = np.nonzero(lst_must == num_now)
-			xmst_must = xmst[0]
-			ymst_must = ymst[0]
-			pox = xmst_must - xmst_was
-			poy = ymst_must - ymst_was
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			was = (poy + pox)
-			pox = xmst_must - xmst_now
-			poy = ymst_must - ymst_now
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			now = (poy + pox)
-			heuristic -= was
-			heuristic += now
 		elif act == 'r':
-			xmst, ymst = np.nonzero(lst_pz == 0)
-			xmst_was = xmst[0]
-			ymst_was = ymst[0]
 			xmst_now = xmst[0]
 			ymst_now = ymst[0] - 1
-			num_now = lst_pz[xmst_now][ymst_now]
-			xmst, ymst = np.nonzero(lst_must == num_now)
-			xmst_must = xmst[0]
-			ymst_must = ymst[0]
-			pox = xmst_must - xmst_was
-			poy = ymst_must - ymst_was
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			was = (poy + pox)
-			pox = xmst_must - xmst_now
-			poy = ymst_must - ymst_now
-			if pox < 0: pox = -pox
-			if poy < 0: poy = -poy
-			now = (poy + pox)
-			heuristic -= was
-			heuristic += now
+		num_now = lst_pz[xmst_now][ymst_now]
+		xmst, ymst = np.nonzero(lst_must == num_now)
+		xmst_must = xmst[0]
+		ymst_must = ymst[0]
+		pox = xmst_must - xmst_was
+		poy = ymst_must - ymst_was
+		if pox < 0: pox = -pox
+		if poy < 0: poy = -poy
+		was = (poy + pox)
+		pox = xmst_must - xmst_now
+		poy = ymst_must - ymst_now
+		if pox < 0: pox = -pox
+		if poy < 0: poy = -poy
+		now = (poy + pox)
+		heuristic -= was
+		heuristic += now
 	return heuristic
 
 
@@ -307,20 +241,12 @@ def heuristic_MH_h_v(lst_pz,lst_must, sz, heuristic, act):
 	lst_tmp = []
 	num = 0
 	while i < maxx:
-
 		frst_t = True
 		y2 = up
 		x2 = left
-		# print 
 		st = lst_must[y2][x2]
 		en = st + right - x2 - 1
 		while x2 < right and i < maxx:######1
-			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
-			# if frst_t:
-			# 	frst_t = False
-			# 	st = lst_must[y2][x2]
-			# 	en = st + right - x2 - 1
-				# print 'st ',st, 'end',en
 			now = lst_pz[y2][x2]
 			if now >= st and now <= en:
 				lst_tmp.append(now)
@@ -328,21 +254,12 @@ def heuristic_MH_h_v(lst_pz,lst_must, sz, heuristic, act):
 			x2 += 1
 			i += 1
 
-
 		frst_t = True
 		x2 -= 1
-		# y2 += 1
 		up += 1
-		# print 
 		st = lst_must[y2][x2]
 		en = st + down - y2 - 1
 		while y2 < down and i < maxx:######2
-			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
-			# if frst_t:
-			# 	frst_t = False
-			# 	st = lst_must[y2][x2]
-			# 	en = st + down - y2 - 1
-				# print 'st ',st, 'end',en
 			now = lst_pz[y2][x2]
 			if now >= st and now <= en:
 				lst_tmp.append(now)
@@ -350,22 +267,12 @@ def heuristic_MH_h_v(lst_pz,lst_must, sz, heuristic, act):
 			y2 += 1
 			i += 1
 
-
-
 		frst_t = True
 		y2 -= 1
-		# x2 -= 1
 		right -= 1
-		# print 
 		st = lst_must[y2][x2]
 		en = st + x2 - left
 		while  x2 >= left and i < maxx:######3
-			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
-			# if frst_t:
-			# 	frst_t = False
-			# 	st = lst_must[y2][x2]
-			# 	en = st + x2 - left
-				# print 'st ',st, 'end',en
 			now = lst_pz[y2][x2]
 			if now >= st and now <= en:
 				lst_tmp.append(now)
@@ -373,41 +280,20 @@ def heuristic_MH_h_v(lst_pz,lst_must, sz, heuristic, act):
 			x2 -= 1
 			i += 1
 
-
-
-
-
-		
 		frst_t = True
 		x2 += 1
-		# y2 -= 1
 		down -= 1
 		st = lst_must[y2][x2]
 		en = st + y2 - up
-		# print 
 		while y2 >= up and i < maxx:######4
-			# print lst_pz[y2][x2],'|||','x=',x2,'y=',y2
-			# if frst_t:
-			# 	frst_t = False
-			# 	st = lst_must[y2][x2]
-			# 	en = st + y2 - up
-				# print 'st ',st, 'end',en
 			now = lst_pz[y2][x2]
 			if now >= st and now <= en:
 				lst_tmp.append(now)
 				num += 1
 			i += 1
 			y2 -= 1
-
-
-		
 		y2 += 1
-		# x2 += 1
 		left += 1
-
-
-	# print 'num = ', num
-	# print '|',lst_tmp,'|'
 	if len(lst_tmp) > 1:
 		num1 = 0
 		while num1 < num:##########wow
@@ -418,9 +304,6 @@ def heuristic_MH_h_v(lst_pz,lst_must, sz, heuristic, act):
 					wow += 1
 				num2 += 1
 			num1 += 1
-	# print 'wow = ',wow
-	#################################
-	# raw_input('-,')
 	return sum_e, wow
 
 
@@ -431,7 +314,6 @@ def parsing_arg():
 			in_file = open(sys.argv[1], "r")
 		except:
 			ERR('Error: cant read file:' + sys.argv[1])
-			sys.exit(1)
 		snos = -1
 		lst_pz = []
 		frst_digit = 0
@@ -483,26 +365,21 @@ def parsing_arg():
 		if sys.argv[1].isdigit():
 			frst_digit = int(sys.argv[1])
 			if frst_digit > 1000:#?
-				print 'Error: size > 50'
-				sys.exit(1)
+				ERR('Error: size > 50')
 		if frst_digit < 3 or frst_digit > 1000:
-			print './start.py [size] [-s, solve OR -u, unsolve] [iterations]\nsize must be digit >= 3 and <= 50'
-			sys.exit(1)
+			ERR('./start.py [size] [-s, solve OR -u, unsolve] [iterations]\nsize must be digit >= 3 and <= 50')
 		if sys.argv[2] == '-u':
 			solv = False
 		elif sys.argv[2] == '-s':
 			solv = True
 		else:
-			print './start.py [size] [-s, solve OR -u, unsolve] [iterations]\n-s OR -u'
-			sys.exit(1)
-
+			ERR('./start.py [size] [-s, solve OR -u, unsolve] [iterations]\n-s OR -u')
 
 		if sys.argv[3].isdigit():
 			iterr = int(sys.argv[3])
 		if iterr < 1 or iterr > 200000:
-			print './start.py [size] [-s, solve OR -u, unsolve] [iterations]\niterations must be digit > 0 and < 200000'
-			sys.exit(1)
-		
+			ERR('./start.py [size] [-s, solve OR -u, unsolve] [iterations]\niterations must be digit > 0 and < 200000')
+
 		lst_must = return_correct_lst(frst_digit)
 		
 		bad = True
@@ -515,8 +392,7 @@ def parsing_arg():
 			else:
 				print 'VBAD'
 	else:
-		print './start.py [name_file]\n./start.py [size] [-s, solve OR -u, unsolve] [iterations]'
-		sys.exit(1)
+		ERR('./start.py [name_file]\n./start.py [size] [-s, solve OR -u, unsolve] [iterations]')
 	return lst_pz, frst_digit
 
 
