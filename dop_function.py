@@ -173,7 +173,7 @@ def heuristic_num_no_pos(lst_pz,lst_must, sz):
 
 def heuristic_MH(lst_pz,lst_must, sz, heuristic, act):
 	
-	if heuristic < 4:
+	if heuristic <= 4:
 		sum_e = 0
 		x = 0
 		while x < sz:
