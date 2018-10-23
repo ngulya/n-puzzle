@@ -173,7 +173,7 @@ def heuristic_num_no_pos(lst_pz,lst_must, sz):
 
 def heuristic_MH(lst_pz,lst_must, sz, heuristic, act):
 	
-	if heuristic == 0:
+	if heuristic < 4:
 		sum_e = 0
 		x = 0
 		while x < sz:
@@ -192,7 +192,7 @@ def heuristic_MH(lst_pz,lst_must, sz, heuristic, act):
 				y += 1
 			x += 1
 		return sum_e
-	if heuristic != 0:
+	elif heuristic != 0:
 		xmst, ymst = np.nonzero(lst_pz == 0)
 		xmst_was = xmst[0]
 		ymst_was = ymst[0]

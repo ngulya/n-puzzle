@@ -305,6 +305,7 @@ if __name__ == "__main__":
 	t0 = time()
 	t1 = 0
 	hmin = frst_digit ** 3
+	# exit()
 	new_variants(opened, closed,flg)
 
 	print 'time solved %f' %(t1-t0)
