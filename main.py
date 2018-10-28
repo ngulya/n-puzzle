@@ -100,21 +100,12 @@ if __name__ == "__main__":
 		in_file.write('\n')
 	in_file.close()
 
-	try:
-		in_file = open('map_solve.txt', "w")
-	except:
-		ERR('Error: cant read file: map_solve.txt')
-	in_file.write('Not yet solved...\n')
-	in_file.close()
-
-	solved = False
-	unsolved = False
 
 	closed = []
 	opened = []
 	
 	parents_c = -1
-	parents_from_c_to_o = 0
+	# parents_from_c_to_o = 0
 
 	nums_opened = 0
 	bad = True

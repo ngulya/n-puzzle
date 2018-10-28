@@ -30,24 +30,28 @@ def print_answer(closed, lst ,lst_now , parents, frst_digit):
 		parents = closed[parents][3]
 	print 'num all operations = ', alls
 	
+	anss = raw_input('\nstep by step Y-Yes:')
+	
+	write_in_file = False
 	try:
 		in_file = open('map_solve.txt', "w")
+		write_in_file = True
 	except:
-		ERR('Error: cant read file: map_solve.txt')
+		print 'Error: cant read file: map_solve.txt'
 	
 	w = len(str(frst_digit*frst_digit)) + 1
-	anss = raw_input('\nstep by step Y-Yes:')
 	n = len(new_lst) - 1
 	n2 = len(new_lst) - 1
 
 	while n >= 0:
-		in_file.write(str(-(n - n2)))
-		in_file.write('\n')
-		for i1 in new_lst[n]:
-			for i2 in i1:
-				in_file.write((str(i2).rjust(w)))
+		if write_in_file:
+			in_file.write(str(-(n - n2)))
 			in_file.write('\n')
-		in_file.write('\n')
+			for i1 in new_lst[n]:
+				for i2 in i1:
+					in_file.write((str(i2).rjust(w)))
+				in_file.write('\n')
+			in_file.write('\n')
 
 		print -(n - n2)
 		print new_lst[n]
@@ -56,7 +60,8 @@ def print_answer(closed, lst ,lst_now , parents, frst_digit):
 		if anss == 'Y' or anss == 'y':
 			raw_input('enter:')
 		n -= 1
-	in_file.close()
+	if write_in_file:
+		in_file.close()
 	print 'num all operations = ', alls
 
 
